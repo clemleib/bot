@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Web Chat: Full-featured bundle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      This CDN points to the latest official release of Web Chat. If you need to test against Web Chat's latest bits, please refer to pointing to Web Chat's MyGet feed:
+      https://github.com/microsoft/BotFramework-WebChat#how-to-test-with-web-chats-latest-bits
+    -->
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <!--<script src="https://unpkg.com/simple-update-in/dist/simple-update-in.production.min.js"></script>-->
+    <style>
+        html,
+        body {  
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: gustan, arial, san-serif!important;
+        }
+        body::-webkit-scrollbar {
+          width: 0.23em;
+          background-color: #fff;
+          display: none;
+          font-family: gustan, arial, san-serif!important;
+        }
+        h1,h2,h3,h4,h5,h6,p{
+            font-family: gustan, arial, san-serif!important;
+        }
+          div::-webkit-scrollbar {
+          width: 0.23em;
+          background-color: #fff;
+        }
+        div::-webkit-scrollbar-track {
+              box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+        }
+         
+        div::-webkit-scrollbar-thumb {
+          background-color: #8e9ca4;
+          outline: 1px solid slategrey;
+        }
+       #webchat {
+            height: 100%!important;
+            width: 100%;
+            padding-top: 52px;
+            padding-bottom: 59px;
+            /* background-color: white; */
+        }
+        .attachment{margin-top: -10px;}
+        .css-gtdio3.css-mfy564 {
+            background-color: #e7eff4;
+          
+        }
+      .markdown.css-o3xlyv {
+            font-size: 13px;
+            font-family: gustan, arial, san-serif!important;
+            line-height: 22px;
+            text-align: left;
+            letter-spacing: 0;
+            color: #FFFFFF;
+            opacity: 1;
+            background: #022D4F 0% 0% no-repeat padding-box;
+        }
+        .markdown.css-o3xlyv a {
+            text-decoration: none;
+            color: #fff;
+        }
+        button.ac-pushButton.style-default {
+            border: none;
+            background-color: #E1EBF1;
+            padding: 15px;
+            text-align: left;
+            font-family: gustan, arial, san-serif!important;
+            letter-spacing: 0;
+            font-size: 13px;
+            color: #022D4F;
+            opacity: 1;
+        }
+         button.ac-pushButton.style-default:hover{
+            background-color: #00adee;
+            color: #fff;
+        }
+        .ac-textBlock p {
+            font-weight: bold;
+            font-size: 12px;
+            text-align: left;
+            font-family: gustan, arial, san-serif!important;
+            letter-spacing: 0;
+            color: #033B61;
+            opacity: 1;
+        }
+        .webchat__bubble__content {
+            background-color: #e7eff4;
+        }
+        .cus-h{
+            font-family: gustan, arial, san-serif!important;
+            letter-spacing: 0;
+            color: #033B61;
+            opacity: 1;
+            font-size: 22px;
+            
+        }
+         form.css-16qahhi.css-n2zczk.css-1mou18w.css-1fe8kfc input {
+            text-align: left;
+            font-size: 13px;
+            font-family: gustan, arial, san-serif!important;
+            letter-spacing: 0;
+            color: #022D4F;
+            opacity: 1;
+        }
+              .css-cf1ppa{position: absolute !important; z-index: 1;margin-left:22px;height:35px !important;margin-top: -17px;
+            width: 35px !important;
+            
+
+                
+                
+        }
+        .css-ks86yf{padding-top: 25px;}
+        
+      img{width: 100%;}
+        .markdown{
+      padding-top: 20px;
+      padding-bottom: 20px;
+      vertical-align: middle
+        }
+        .head-div{
+            background: #fff;
+            position: fixed;
+            top: 0px;
+            width: 100%;
+            z-index: 1000;
+            text-align: center;
+            height: 53px;
+        }
+        
+        .css-1qyo5rb{position: relative;padding-top: 25px; z-index: 10; vertical-align: middle;}
+        .main {
+            padding: 9px;
+            position: fixed;
+            bottom: 0px;
+            z-index: 1000;
+            width: 100%;
+        }
+        .css-cf1ppa:not(.from-user) {
+            background-color: transparent!important;
+        }
+        @media only screen and (max-width: 600px) {
+          .main {
+            padding: 2px;
+        }
+        }
+        @media only screen and (max-width: 540px) {
+          .main {
+            padding: 1px;
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="head-div">
+        <h1 class="cus-h">Chat with Thuso</h1>
+    </div>
+    <div id="webchat" role="main"></div>
+    <script>
+        (async function() {
+            // In this demo, we are using Direct Line token from MockBot.
+            // Your client code must provide either a secret or a token to talk to your bot.
+            // Tokens are more secure. To learn about the differences between secrets and tokens
+            // and to understand the risks associated with using secrets, visit https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-direct-line-3-0-authentication?view=azure-bot-service-4.0            
+            const res = await fetch('https://directline.botframework.com/v3/directline/tokens/generate', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer nVs0VVWGsag.GAk21t4jcHT7_1kDEmGSl2MIxU4hygGeg6SYbvLAjs0'
+                }
+            });
+            const { token } = await res.json();
+            const styleOptions = {
+            botAvatarImage: './bot.jpeg',
+            userAvatarImage: 'https://github.com/compulim.png?size=64',
+            userAvatarInitials: 'WC',
+            
+            }
+            const store = window.WebChat.createStore({}, ({ dispatch }) => next => action => {
+                //if (action.type === 'DIRECT_LINE/POST_ACTIVITY') {
+                //    action = window.simpleUpdateIn(action, ['payload', 'activity', 'channelData', 'email'], () => 'marthin@pdtsa.co');
+                //}
+                if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+                    dispatch({
+                        type: 'WEB_CHAT/SEND_EVENT',
+                        payload: {
+                            name: 'webchat/join',
+                            value: { language: window.navigator.language }
+                        }
+                    });
+                }
+                if (action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
+                    const event = new Event('webchatincomingactivity');
+                    event.data = action.payload.activity;
+                    window.dispatchEvent(event);
+                }
+                return next(action);
+            });
+
+            window.WebChat.renderWebChat(
+                {
+                    directLine: window.WebChat.createDirectLine({ token })
+                    ,
+                    userID: 'user101',
+                    username: 'Test User',
+                    locale: 'en-US',
+                    styleOptions: {
+                        botAvatarInitials: 'TB',
+                        userAvatarInitials: 'TU'
+                    },
+                    store,styleOptions
+                }, document.getElementById('webchat'));
+
+            //store.dispatch({
+            //    type: 'WEB_CHAT/SET_SEND_BOX',
+            //    payload: { text: 'channel-data' }
+            //});
+
+            //document.querySelector('#helpButton').addEventListener('click', () => {
+            //    store.dispatch({
+            //        type: 'WEB_CHAT/SEND_MESSAGE',
+            //        payload: { text: 'help' }
+            //    });
+            //});
+
+            window.addEventListener('webchatincomingactivity', ({ data }) => {
+                console.log(`Received an activity of type "${ data.type }":`);
+                console.log(data);
+            });
+
+            document.querySelector('#webchat > *').focus();
+      })().catch(err => console.error(err));
+    </script>
+</body>
